@@ -1,0 +1,31 @@
+---
+description: Forms use only Signal Forms from @angular/forms/signals.
+globs: src/app/**/*.{ts,html}
+alwaysApply: false
+---
+
+# Signal Forms
+
+Every form uses Signal Forms from `@angular/forms/signals`: `form()`, `schema()`, `FormField`, `FormRoot`, `submit()`, `required`, `email`, `min`. That API is stable in Angular 22. This project does not use reactive or template-driven forms.
+
+- The model is a `signal`. `form()` wraps that model and does not keep another copy.
+- Screen validation lives in the form schema. A pure business rule (minimum amount, category by movement type) lives in `domain/`, and the schema applies it.
+- The template binds with `[formField]`. Submit with `[formRoot]` or `submit()`.
+- `FormBuilder`, `ReactiveFormsModule`, `Validators`, `FormGroup`, and `ngModel` do not appear.
+
+```typescript
+import { form, FormField, min, required } from '@angular/forms/signals';
+
+@Component({
+  selector: 'app-movement-form',
+  imports: [FormField],
+  template: `<input type="number" [formField]="movementForm.amountPesos" />`,
+})
+export class MovementForm {
+  readonly movementModel = signal({ amountPesos: 0 });
+  readonly movementForm = form(this.movementModel, (path) => {
+    required(path.amountPesos);
+    min(path.amountPesos, 0.01);
+  });
+}
+```

@@ -1,0 +1,31 @@
+---
+description: Folders by business capability, module shared code, and file names.
+alwaysApply: true
+---
+
+# Folders
+
+A folder name says what the system does. The root of `src/app` holds `domain/`, `infrastructure/`, and `ui/`.
+
+Current UI capabilities: `ui/login/`, `ui/business-list/`, `ui/business-detail/`.
+
+```
+<capability>/
+  <capability>.ts
+  <capability>.spec.ts
+  components/<capability>-<part>/
+  constants/<capability>.constants.ts
+  interfaces/<entity>.ts
+  pipes/<pipe>/<pipe>.ts
+  utils/<util>/<util>.ts
+  state/
+```
+
+- One owner: the code lives next to that owner.
+- Two or more owners in the same module: `ui/shared/` with `state/`, `components/`, `pipes/`, `directives/`, `interfaces/`, `utils/`.
+- A business contract shared across areas: `domain/`.
+- Inside `shared/`, do not use `infrastructure/` or `ui/`.
+- Do not create `services/`, `components/`, `utils/`, `interfaces/`, `models/`, `pipes/`, or `enums/` at the root of `src/app`.
+- Do not use `index.ts` barrels inside features.
+- Files and folders are kebab-case. If a file has siblings (spec, html, css), put them in a folder with the same name.
+- `export interface I…` and view-model `type`s live only in `interfaces/` of the feature, the block, or `shared/`. Do not declare them in a util, pipe, component, directive, or store.
