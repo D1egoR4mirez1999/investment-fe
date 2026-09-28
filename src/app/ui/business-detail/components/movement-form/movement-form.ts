@@ -50,7 +50,7 @@ import { IMovementForm } from '../../interfaces/movement-form';
         </label>
 
         <label class="block text-sm">
-          <span class="font-medium text-slate-700">Monto (MXN)</span>
+          <span class="font-medium text-slate-700">Monto (COP)</span>
           <input
             type="number"
             step="0.01"
