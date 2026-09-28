@@ -1,0 +1,27 @@
+---
+description: Unit tests that protect business rules, not the framework.
+globs: src/**/*.spec.ts
+alwaysApply: false
+---
+
+# Tests
+
+A test exists when a wrong result would misstate an account, a split, or a movement. Do not write a test whose only assert is that a class was created or that a method was called.
+
+Test pure functions in `domain/` directly. Write a component test only when the screen decides the rule: which categories it offers, which payload it sends, which label it shows.
+
+In this frontend, protect:
+
+- `pesosToCents` rounds to cents and `formatMoney` displays MXN.
+- An income is a haircut, makeup, or other. An expense is not a haircut.
+- A $0 movement is not sent. The payload goes out in cents. An empty note is not sent.
+- Status reads as "En recuperación", "Capital recuperado", or "Pérdida del mes".
+- December moves forward to January of the next year. January moves back to December of the previous year.
+
+The split, capital recovery, and monthly profit arrive in `IMonthlySummary`. That calculation belongs to the backend. Here, test how it is presented and what is decided before it is sent.
+
+```typescript
+it('rounds pesos to cents', () => {
+  expect(pesosToCents(10.005)).toBe(1001);
+});
+```

@@ -1,0 +1,21 @@
+---
+description: Domain, infrastructure, and ui layers. New code is born in its layer.
+alwaysApply: true
+---
+
+# Layers
+
+Dependencies point in one direction: domain ← infrastructure ← ui.
+
+| Layer | Folder | Lives here | Does not live here |
+|---|---|---|---|
+| domain | `src/app/domain/` | API and business contracts, enums that belong to that contract, pure functions | Angular, HTTP, `window`, components, screen view-models |
+| infrastructure | `src/app/infrastructure/` | HTTP, sockets, platform wrappers, app-wide guards and interceptors | UI, screen stores, editor state |
+| ui | `src/app/ui/` | Components, pipes, directives, screen stores and coordinators | API contracts |
+
+- Infrastructure imports domain and other infrastructure. It never imports UI.
+- UI imports domain and infrastructure.
+- An `@Injectable` store is still UI.
+- An app-wide guard (auth) lives in infrastructure. A guard tied to one screen lives with that capability.
+- Backend DTOs live in domain. Screen view-models (`I…`) live in UI.
+- Do not create `src/app/core/` or `src/app/pages/`. New code is born in its layer.

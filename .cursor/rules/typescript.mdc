@@ -1,0 +1,22 @@
+---
+description: TypeScript names, types, and constants in investment-fe.
+globs: src/**/*.ts
+alwaysApply: false
+---
+
+# TypeScript
+
+- Files are kebab-case, without a type suffix: `pages.ts`, not `pages.component.ts`.
+- Interfaces are PascalCase with an `I` prefix (`IPage`). Classes are PascalCase, without a `Component`, `Service`, `Pipe`, `Directive`, `Guard`, `Interceptor`, `Resolver`, or `Module` suffix.
+- Enums are PascalCase, without an `E` prefix and without an `Enum` suffix.
+- Signals, computed values, inputs, and outputs are `readonly` camelCase. The type goes in the factory generic (`signal<boolean>(false)`, `input.required<string>()`).
+- Exception: an `input()` with `transform` is annotated as `InputSignalWithTransform<T, U>`.
+- Every function and method declares its return type, including `void`.
+- Inside a function, do not annotate `const` or `let` when the right-hand side is already typed.
+- Module-level constants have an explicit type, except primitive literals (`''`, `0`, `true`).
+- `strict: true`. `any` is forbidden in interfaces and signatures. Use `unknown`, generics, or concrete types.
+- Do not add comments that narrate the code.
+
+Strings, numbers, and flags used in TypeScript logic are a `const` or enum in the feature `constants/`, in `domain/` when they are a contract, or in `shared/` when several capabilities share them.
+
+Text that appears only in a template stays in the HTML. Do not create a constant and a class bridge only to write `{{ saveLabel }}`.

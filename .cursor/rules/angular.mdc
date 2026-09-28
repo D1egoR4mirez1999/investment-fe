@@ -1,0 +1,44 @@
+---
+description: Components, signals, and injection for this Angular 22 frontend.
+globs: src/app/**/*.{ts,html}
+alwaysApply: false
+---
+
+# Angular
+
+Standalone is the default. Do not write `standalone: true`. Do not set `changeDetection`; OnPush is already the default in Angular 22. Selectors use the `app` prefix (`app-business-list`). Keep each component small and focused on one responsibility.
+
+- A template of 50 lines or fewer is inline. Above 50 lines, use `templateUrl` and `styleUrl` relative to the `.ts` file.
+- Host bindings go in the decorator `host` map. Do not use `@HostBinding` or `@HostListener`.
+- Inject with `inject()`. Every injected dependency is `private readonly`.
+- Inputs and outputs use `input()`, `input.required()`, and `output()`. Two-way bindings use `model()` with `[(prop)]`, not a paired `input()` and `output()`.
+- Do not name an `output()` after a native DOM event (`click`, `change`, `submit`, `toggle`, `focus`).
+- Local state uses `signal()`. Derived values use `computed()`. Use `linkedSignal()` when local state must stay in sync with other signals, including a reset when a parent signal changes.
+- The template reads signals, computed values, pipes, and event handlers. It does not call methods to derive data.
+- Templates use native control flow (`@if`, `@for`, `@switch`). Bind `class` and `style` directly. Do not use `ngClass`, `ngStyle`, `*ngIf`, `*ngFor`, or `*ngSwitch`.
+- Do not assume template globals such as `new Date()`.
+- Use `set()` or `update()`. Do not use `signal().mutate()`.
+- `effect()` is only for real effects (analytics, logging, DOM outside Angular).
+- Prefer signals. Bridge RxJS only at the boundary with `toSignal()` / `toObservable()`. If a template still reads an observable, use the `async` pipe. Class subscriptions use `takeUntilDestroyed()` and `DestroyRef`.
+- Import RxJS from `rxjs` and `rxjs/operators`.
+- An app singleton uses `@Service()` from `@angular/core` (`autoProvided` defaults to true). A service provided by hand uses `@Service({ autoProvided: false })`. One responsibility per class. Do not use `@Injectable({ providedIn: 'root' })`.
+- `localStorage`, `sessionStorage`, `window`, and `document` go through an injectable wrapper that respects SSR (`isPlatformBrowser`), such as `BrowserStorage`.
+- Routes and blocks are lazy. Pipes transform values per row.
+- Static images from `assets/` use `NgOptimizedImage`. Do not use it for inline base64 images.
+- UI must pass AXE checks and meet WCAG AA: focus management, color contrast, and ARIA attributes.
+
+```typescript
+@Service()
+export class Api {
+  private readonly http = inject(HttpClient);
+}
+
+@Component({
+  selector: 'app-business-list',
+  template: `@if (loading()) { <p>Cargando</p> }`,
+})
+export class BusinessList {
+  private readonly api = inject(Api);
+  readonly loading = signal(true);
+}
+```
