@@ -5,7 +5,7 @@ describe('money', () => {
     expect(pesosToCents(10.005)).toBe(1001);
   });
 
-  it('formats cents as MXN', () => {
-    expect(formatMoney(10050)).toContain('100.50');
+  it('formats cents as COP', () => {
+    expect(formatMoney(10050)).toMatch(/100[,.]50/);
   });
 });

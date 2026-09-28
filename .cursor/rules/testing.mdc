@@ -12,7 +12,7 @@ Test pure functions in `domain/` directly. Write a component test only when the 
 
 In this frontend, protect:
 
-- `pesosToCents` rounds to cents and `formatMoney` displays MXN.
+- `pesosToCents` rounds to cents and `formatMoney` displays COP.
 - An income is a haircut, makeup, or other. An expense is not a haircut.
 - A $0 movement is not sent. The payload goes out in cents. An empty note is not sent.
 - Status reads as "En recuperación", "Capital recuperado", or "Pérdida del mes".
